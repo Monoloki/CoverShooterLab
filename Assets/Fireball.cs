@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Fireball : MonoBehaviour
 {
+    public ParticleSystem ParticleSystem;
+    
     private float _speed = 8f;
     private float _lifeDuration = 2f;
     private float _lifeTimer;
@@ -13,6 +15,7 @@ public class Fireball : MonoBehaviour
     {
         _lifeTimer = _lifeDuration;
         MoveController();
+        ParticleSystem.Play();
     }
 
     private void Update()
