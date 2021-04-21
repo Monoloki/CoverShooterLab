@@ -6,7 +6,7 @@ using UnityEngine;
 public class Audio : MonoBehaviour
 {
     private AudioSource _audioSource;
-   
+
     [SerializeField]
     private AudioClip[] _audioClips;
 
@@ -20,7 +20,7 @@ public class Audio : MonoBehaviour
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        _characterController = GetComponent<CharacterController>();
+        _characterController = GetComponentInParent<CharacterController>();
     }
 
     private void Update()
@@ -33,6 +33,24 @@ public class Audio : MonoBehaviour
         //TODO: do fly sounds
         if (!_characterController.isGrounded) 
             return;
+
+        if (_characterController.velocity.sqrMagnitude > 0)
+        {
+            _accumulatedDistance += Time.deltaTime;
+
+            if (_accumulatedDistance > _stepDistance)
+            {
+                _audioSource.volume = UnityEngine.Random.Range(_volumeMin, _volumeMax);
+                _audioSource.clip = _audioClips[UnityEngine.Random.Range(0, _audioClips.Length)];
+                _audioSource.Play();
+
+                _accumulatedDistance = 0f;
+            }
+            else
+            {
+                _accumulatedDistance = 0f;
+            }
+        }
         
     }
 }
